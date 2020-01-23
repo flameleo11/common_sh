@@ -48,9 +48,13 @@ alias g='grep -i $*'
 alias gn='grep -iv $*'
 
 
-alias r='updatesh'
-alias ra='update_desktop_lnk'
 alias t='testsh'
+alias r='updatesh'
+alias rd='update_desktop_lnk'
+alias ra='update_apt_repo'
+alias pc='sysinfo'
+
+
 
 # function
 
@@ -106,10 +110,6 @@ alias hist='history | tail $*'
 
 alias startup='sudo gnome-session-properties'
 alias pause='read -p "Press enter to continue"'
-
-
-# brief
-alias SAUU='sudo apt update; sudo apt -y upgrade'
 
 function lsnet() {
   sudo nethogs
@@ -410,13 +410,14 @@ function ver-all() {
 }
 
 
-function apt-dep() {
+function apt-why() {
   ver $*
   apt-cache depends $*
   apt-cache rdepends $*
   aptitude why $*
 }
 
+alias apt-dep='apt-why'
 
 
 function apt-gui() {
@@ -450,6 +451,7 @@ function apt-fix-broken() {
   # sudo apt-get clean && sudo apt-get update
   # sudo apt-get upgrade
   # sudo apt update
+  # apt list --upgradable
   apt list --upgradable
   sudo apt autoremove 
   sudo dpkg --configure -a
@@ -460,6 +462,8 @@ function apt-fix-broken() {
 }
 
 function apt-levelup() {
+  # alias SAUU='sudo apt update; sudo apt -y upgrade'
+
   sudo apt upgrade
 }
 
@@ -502,7 +506,7 @@ function apt-update() {
 }
 
 function giveme() {
-  rem get current fold permission
+  rem get current folder and all files permission
   sudo chown -hR me:me .
   # chmod ug+rwx -R $*
 }
@@ -1027,19 +1031,6 @@ function win() {
 
 }
 
-
-# build 
-# source .bash_aliases
-function update_desktop_lnk() {
-  echo /var/lib/snapd/desktop/applications
-  echo /usr/share/ubuntu/applications
-  echo /usr/share/applications
-  echo /usr/local/share/applications
-  echo \~/.local/share/applications
-
-  sudo update-desktop-database
-}
-
 function logbash() {
   # echo logbash to ~/log/ (cache: ~/data)
   # mkdir ~/my-etc/data2/ && touch 111.txt
@@ -1064,6 +1055,27 @@ function updatesh() {
   source ~/.bash_aliases
 }
 
+function update_desktop_lnk() {
+  echo /var/lib/snapd/desktop/applications
+  echo /usr/share/ubuntu/applications
+  echo /usr/share/applications
+  echo /usr/local/share/applications
+  echo \~/.local/share/applications
+
+  sudo update-desktop-database
+}
+
+function update_apt_repo() {
+  sudo apt update
+}
+
+function sysinfo() {
+  lsb_release -a
+  uname -a
+  # lsb_release -c
+  # uname -r
+}
+
 function testsh() {
   echo "Fetching OpenAL-CS from GitHub."
   if command -v curl >/dev/null 2>&1; then
@@ -1079,7 +1091,6 @@ function testsh() {
 
   echo version: 112
 }
-
 
 export MY_BASH_LOG_FILE="/home/me/Documents/bash-log/bash-usr_$EUID-$(date +"%Y_%m_%d").log"
 

@@ -6,9 +6,9 @@ fi
 
 # run win-bcomp-diff "$@"
 
+# msgbox "$@"
 meld "$@"
 
-# msgbox "$@"
 # args:
 #   1 /tmp/rabbitvcs-46fcc80cea/rabbitvcs-1-HEAD-nofile.txt
 #   2 /drive_d/game/tttt/nofile.txt
