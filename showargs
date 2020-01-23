@@ -1,0 +1,8 @@
+#!/bin/bash
+# /home/me/app/bin/bcomp
+if [ -f /home/me/app/bin/common.sh ]; then
+    . /home/me/app/bin/common.sh
+fi
+
+
+msgbox "${@:2}"    
