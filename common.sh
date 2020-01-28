@@ -3,6 +3,67 @@
 export MY_STEAM_PROTON="/drive_d/SteamLibrary/steamapps/common/Proton 4.11/"
 export nul="/dev/null"
 
+# fast char option
+alias c='clear'
+alias g='grep -i $*'
+alias gn='grep -iv $*'
+alias rm='rm -i '
+
+alias t='testsh'
+alias r='updatesh'
+alias rd='update_desktop_lnk'
+alias ra='update_apt_repo'
+alias pc='sysinfo'
+
+# function
+alias sudo='sudo '
+alias p2do='sudo -u p2 -s '
+alias xcopy='xargs cp -t $*'
+
+# alias ve='!$'
+# alias va='${BASH_ALIASES[ve]}'
+# alias vi='!$*'
+
+alias dbl='sudo updatedb && locate'
+alias p='ping $1 -c 5'
+
+
+alias lx='lsproxy'
+alias px='setproxy'
+
+# short comamnd
+alias getpass="openssl rand -base64 20"
+alias ipe='curl ipinfo.io/ip'
+alias ipi='ipconfig getifaddr en0'
+alias sha='shasum -a 256 '
+alias speed='speedtest-cli --server 2406 --simple'
+alias untar='tar -zxvf '
+alias wget='wget -c '
+alias www='python -m SimpleHTTPServer 8000'
+alias ping='ping -c 5'
+alias pid='ps -aux |g $*'
+
+# alias var='echo `$$1`'
+
+# hotkey
+alias calc='kcalc'
+alias taskmgr='gnome-system-monitor'
+alias explorer='xdg-open'
+
+alias app-store='gnome-software'
+alias logout='gnome-session-quit'
+
+alias hist='history | tail $*'
+
+alias startup='sudo gnome-session-properties'
+alias pause='read -p "Press enter to continue"'
+
+
+
+
+function lsnet() {
+  sudo nethogs
+}
 
 function my_bash_doc_helps() {
   rem preserves the breaks between them \
@@ -41,78 +102,11 @@ function setproxy() {
   echo $all_proxy
 }
 
-
-# fast char option
-alias c='clear'
-alias g='grep -i $*'
-alias gn='grep -iv $*'
-
-
-alias t='testsh'
-alias r='updatesh'
-alias rd='update_desktop_lnk'
-alias ra='update_apt_repo'
-alias pc='sysinfo'
-
-
-
-# function
-
-
-alias sudo='sudo '
-alias p2do='sudo -u p2 -s '
-
-alias xcopy='xargs cp -t $*'
-
-alias rm='rm -i '
-
-
-
-# alias ve='!$'
-# alias va='${BASH_ALIASES[ve]}'
-# alias vi='!$*'
-
-
-alias dbl='sudo updatedb && locate'
-alias p='ping $1 -c 5'
-
-# ls show all file 
-alias la='ls -a'
-alias lx='lsproxy'
-alias px='setproxy'
-
-
-
-
-# short comamnd
-alias getpass="openssl rand -base64 20"
-alias ipe='curl ipinfo.io/ip'
-alias ipi='ipconfig getifaddr en0'
-alias sha='shasum -a 256 '
-alias speed='speedtest-cli --server 2406 --simple'
-alias untar='tar -zxvf '
-alias wget='wget -c '
-alias www='python -m SimpleHTTPServer 8000'
-alias ping='ping -c 5'
-alias pid='ps -aux |g $*'
-
-# alias var='echo `$$1`'
-
-# hotkey
-alias calc='gnome-calculator'
-alias taskmgr='gnome-system-monitor'
-alias explorer='xdg-open'
-
-alias app-store='gnome-software'
-alias logout='gnome-session-quit'
-
-alias hist='history | tail $*'
-
-alias startup='sudo gnome-session-properties'
-alias pause='read -p "Press enter to continue"'
-
-function lsnet() {
-  sudo nethogs
+function location_auto_startup() {
+  gnome-session-properties
+  gnome-tweaks # startup
+  cd /home/me/.config/autostart/
+  # dbl autostart|g '.desktop$'
 }
 
 function nmcli_connect() {
@@ -143,6 +137,14 @@ function lscrash() {
   pushd /var/crash
   ls
 }
+
+
+function ls_line_count() {
+  ls $* | wc -l
+}
+
+
+
 
 alias killbash='killall bash'
 alias killterm='killall gnome-terminal-server'
@@ -191,8 +193,11 @@ function FS() {
 
 function st3() {
   if [ -z "$*" ]; then
-    echo subl .
-    run subl .;
+    if [[ . -ef ~ ]]; then
+      run subl;
+    else
+      run subl .;   
+    fi
   else
     echo subl $*
     run subl $*;
@@ -202,10 +207,10 @@ function st3() {
 function ST3() {
   if [ -z "$*" ]; then
     echo subl .
-    run subl-root .;
+    run subl_root .;
   else
     echo subl $*
-    run subl-root $*;
+    run subl_root $*;
   fi  
 }
 
@@ -219,14 +224,6 @@ function vscode() {
   fi  
 }
 
-function lg() {
-  ls | grep -i "$*"
-}
-
-function lgrm() {
-  ls | grep -iZ "$*" | xargs sudo rm -r
-}
-
 function delete_all_link() {
   find . -type l |xargs rm -f
 }
@@ -236,6 +233,10 @@ function find_by_type() {
   find . -type l 
 }
 
+function ls_pip_demo() {
+  ls | grep -i "$*"
+  ls | grep -iZ "$*" | xargs sudo rm -r
+}
 
 function dir() {
   # local di="$1"
@@ -261,6 +262,31 @@ function find_in() {
   fi  
 }
 
+# ls show all file 
+alias l1='ls -1'
+alias la='ls -a'
+alias dir='ls -A1'
+alias ll='ls -halF'
+alias lnode='ls --inode'
+
+function lscolor() {
+  local option="$1"
+  if [ -z "$1" ]; then
+    option="off"
+  fi  
+
+  case $option in
+    off|"0")
+      alias ls='ls --color=never'
+      ;;
+    on|"1")
+      alias ls='ls --color=auto'
+      ;;
+    *)
+      echo lscolor option not find $*
+      ;;
+  esac
+}
 
 # # todo $0 $-1
 # function backwardshell() {
@@ -340,6 +366,21 @@ function gnome-lnk() {
   gnome-desktop-item-edit --create-new .
 }
 
+function ubuntu-adduser-or-deluser() {
+  sudo adduser p2
+  # adduser: The user `p2' already exists.
+  sudo deluser --remove-home p2
+  # Looking for files to backup/remove ...
+  # Removing files ...
+  # Removing user `p2' ...
+  # Warning: group `p2' has no more members.
+}
+
+
+
+
+
+
 function add_inotify_max() {
   echo /etc/sysctl.conf append line
   echo "fs.inotify.max_user_watches=1048576" 
@@ -382,9 +423,9 @@ function apt-list() {
 
 
 
+alias i='install'
 function install() {
   sudo apt install $*
-  ver $*
 }
 
 function deb() {
@@ -393,14 +434,47 @@ function deb() {
 }
 
 function reinstall() {
-  ver $*
   sudo apt install --reinstall $*
-  ver $*
+  # sudo apt install gir1.2-gdkpixbuf-2.0=2.36.11-2
 }
 
 
+
+alias v='ver_x96'
+function ver_x96() {
+  # sudo dpkg --add-architecture i386 
+  apt-cache policy $1
+  apt-cache policy $1:i386
+  apt-cache policy $1:amd64
+}
+
 function ver() {
-  apt-cache policy $*
+  apt-cache policy $1
+}
+
+alias ii='force-reinstall'
+function force-reinstall() {
+  mkdir -p ./deb
+  mv *.deb deb
+
+  pkgname=$(echo $1| cut -d ":" -f 1)
+  pkgarch=$(echo $1| cut -d ":" -f 2)
+  echo $1, $pkgname, $pkgarch 
+
+  ver $*
+  sudo dpkg -r --force-depends "$1"
+  apt-get download "$1"
+  # apt-get download "$1:i386"
+  # apt-get download "$1:amd64"
+
+  if [ "$pkgname" = "$pkgarch" ]; then
+      deb=$(echo $1*.deb)
+  else
+      deb=$(echo $pkgname*$pkgarch.deb)
+  fi
+  echo sudo dpkg -i --force-all $deb
+  sudo dpkg -i --force-all $deb
+  # ver $*
 }
 
 function ver-all() {
@@ -408,7 +482,6 @@ function ver-all() {
   apt-cache rdepends $*
   apt-cache policy $*
 }
-
 
 function apt-why() {
   ver $*
@@ -423,8 +496,6 @@ alias apt-dep='apt-why'
 function apt-gui() {
   aptitude
 }
-
-
 
 function apt-src() {
   apt source $*
@@ -456,10 +527,63 @@ function apt-fix-broken() {
   sudo apt autoremove 
   sudo dpkg --configure -a
   sudo apt-get -f install 
+  # sudo dpkg --add-architecture i386 
   # sudo aptitude install wine-staging
+    # sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
   # sudo apt-get install --install-recommends winehq-staging
   # sudo mv /var/lib/dpkg/info/polar-bookshelf.* /tmp
 }
+
+function fix-gnome-setting() {
+  gsettings set org.gnome.ControlCenter last-panel ''
+  gnome-control-center
+}
+
+
+alias clipit='copyit'
+function copyit() {
+  if [ -z "$*" ]; then
+    echo [clipboard] copy: $PWD
+    echo -n "$PWD" | xsel -bi
+  else
+    echo [clipboard] copy: $* 
+    echo -n "$*" | xsel -bi
+  fi   
+}
+
+function xsel-help() {
+  # alias SAUU='sudo apt update; sudo apt -y upgrade'
+
+  # input copy to clipboard
+  # clipit xxx
+
+  # input to internal selection mem
+  xsel -i < 1.txt
+  echo xxx | xsel -i
+  # apprend to ...
+  echo xxx | xsel -a
+
+  # output
+  xsel -o
+  xsel
+}
+
+
+function change-gnome-shell-theme-config-css() {
+  sudo update-alternatives --config gdm3.css
+}
+
+function dconf-config-load-export() {
+  # export all config
+  dconf dump / > root.dconf
+  # import all config
+  dconf load / < root.dconf
+
+  # demo
+  # dconf dump /org/gnome/settings-daemon/plugins/media-keys/ > custom-keybindings.dconf
+  # dconf load /org/gnome/settings-daemon/plugins/media-keys/ < custom-keybindings
+}
+
 
 function apt-levelup() {
   # alias SAUU='sudo apt update; sudo apt -y upgrade'
@@ -497,12 +621,13 @@ function apt-update-install() {
   ver $*
 }
 
-function apt-update() {
-  for repo in "$@"; do
-    echo $repo
-    # sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/${repo}" \
-    # -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"    
-  done
+function apt_update_single() {
+  # for repo in "$@"; do
+  #   echo $repo
+  #   # sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/${repo}" \
+  #   # -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"    
+  # done
+  echo 111
 }
 
 function giveme() {
@@ -537,9 +662,6 @@ function x() {
 
 
 function start() {
-  # start lantern
-  # nohup $1 &
-  # bash -c $*
   $* > $nul 2>&1 & disown
 }
 
@@ -582,6 +704,8 @@ function xcursor-format() {
   ln -s nwse-resize  se-resize
 
   popd
+
+  echo "[OK] convert to windows cursor like "
 }
 
 # mkdir && touch
@@ -712,6 +836,33 @@ function msgbox() {
   7 $7";
 }
 
+function sound() {
+  # aplay /usr/share/sounds/alsa/Side_Right.wav
+  # paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+  local ussd=/usr/share/sounds/ubuntu/notifications
+  local wav="$1"
+
+  # set $1 default
+  if [ -z "$1" ]; then
+    wav="Positive.ogg"
+  fi
+
+  if [ "$(ps -ocommand= -p $PPID | awk '{print $1}')" == 'script' ]; then
+    status="on"
+  fi
+
+  # 'Soft delay.ogg'
+  # Amsterdam.ogg
+  # Blip.ogg
+  # Mallet.ogg
+  # Positive.ogg
+  # Rhodes.ogg
+  # Slick.ogg
+  # Xylo.ogg
+  start paplay $ussd/$wav
+  # paplay /usr/share/sounds/alsa/Side_Right.wav
+}
+
 
 # wine shortcut
 function run() {
@@ -722,25 +873,22 @@ function run() {
   echo $name
   case $name in
     # wine
-    "win-taskmgr")
+      # WINEPREFIX="/drive_d/wine/dx9/" \
       # WINEPREFIX=~/wine/win10/ 
+    "win-taskmgr")
       wine taskmgr
       ;;
     "win-subl")
-      # WINEPREFIX="/drive_d/wine/dx9/" \
       wine "/drive_d/dev/SublimeText3207/subl.exe" -n
       return 
       ;;
     "win-everything")
-      # WINEPREFIX="/drive_d/wine/dx9/" \
       wine "/drive_d/app/Everything-x64/Everything.exe"
       ;;
     "win-track_folder")
-      WINEPREFIX="/drive_d/wine/dx9/" \
       wine "/drive_d/app/TrackFolderChanges/TrackFolderChanges.exe"
       ;;
     "win-bc")
-      WINEPREFIX="/drive_d/wine/dx9/" \
       wine "/drive_d/dev/BCompare3/BComp.exe" "${@:2}"
       ;;
 
@@ -748,12 +896,13 @@ function run() {
     "win-bcomp-diff")
       # /usr/bin/meld 
       # /home/me/app/bin/bcomp
+      # sdiff
+      # icdiff
       local f1=$(winepath -w "$2")
       local f2=$(winepath -w "$3")
 
       # debugmsg "$2" "$3"
       # msgbox "$f1" "$f2"
-      WINEPREFIX="/drive_d/wine/dx9/" \
       wine "/drive_d/dev/BCompare3/BComp.exe" "$f1" "$f2"
       ;;      
     "win-bcomp-merge")
@@ -819,20 +968,34 @@ function run() {
        # run "C:\Program Files (x86)\Cheat Engine 6.7\Cheat Engine.exe"
       ;;
 
+    "play")
+      # playonlinux
+      # STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/692850/" \
+      # "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+      # run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/demo/test-joystick-demo.ahk"
+      
+      GTK_THEME=Arc playonlinux "${@:2}"
+      ;;
+
+
       
     "war3")
-      # STEAM_COMPAT_DATA_PATH="/drive_d/proton/stellaris/" \
+      # STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3" \
+      # LANG="zh_CN.UTF-8" \
       # "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-      #  run "/drive_d/game/war3_126_en/War3.exe"
+      # run "/drive_d/game/WC3-Installer-1-30_EN/Warcraft-III-Setup.exe" -opengl "$args"
+      # run "/drive_d/game/war3-121/War3.exe" -opengl "$args"
+      # run "/drive_d/game/war3-130/War3.exe" -opengl "$args"
+
       
       # export WINEPREFIX=~/wine/win10/ 
       # export WINEARCH=win32
       # export WINEPREFIX="/drive_d/wine/dx9"winetricks
 
-      WINEPREFIX="/drive_d/wine/dx9" WINEARCH=win32 \
-      winetricks corefonts
-      # wine uninstaller
+      # WINEPREFIX="/drive_d/wine/war3" WINEARCH=win32 \
       # winecfg
+      # winetricks 
+      # wine uninstaller
       # wine "C:\windows\system32\dxdiag.exe"
       # winetricks --force dotnet40
       # winecfg
@@ -844,9 +1007,8 @@ function run() {
       # LANG="en_US.UTF-8" 
       # LANG="en_US" 
 
-      # LANG="zh_CN.UTF-8" WINEPREFIX="/drive_d/wine/dx9" WINEARCH=win32 \
-      # wine "/drive_d/game/war3-121/War3.exe" -opengl "$args"
-
+      LANG="zh_CN.UTF-8" WINEPREFIX="/drive_d/wine/war3" WINEARCH=win32 \
+      wine "/drive_d/game/war3-130/War3.exe" -opengl "$args"
 
       # LANG="zh_CN.UTF-8" WINEPREFIX="/drive_d/wine/dx9" WINEARCH=win32 \
       # wine "/drive_d/game/WC3-Installer-1-30_EN/Warcraft-III-Setup.exe"
@@ -854,13 +1016,14 @@ function run() {
       ;;
     "worldedit")
       STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
+      LANG="zh_CN.UTF-8" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-       run "/drive_d/game/war3-121/worldedit.exe"
+       run "/drive_d/game/war3-121/worldedit.exe" -opengl "$args"
       ;;
 
 
     "proton-star")
-      STEAM_COMPAT_DATA_PATH="/drive_d/proton/stellaris/" \
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris/" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
        run "/drive_d/game/Stellaris2/stellaris-LAN.exe"
        # run "D:\game\Stellaris2\stellaris-LAN.exe"
@@ -868,24 +1031,24 @@ function run() {
        # /media/me/GIT1/game/Stellaris/Paradox Interactive/Stellaris
       ;;
     "proton-star-ahk")
-
-      STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/692850/" \
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris/" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
        run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-proton.ahk"
        # run "C:\Program Files (x86)\Cheat Engine 6.7\Cheat Engine.exe"
       ;;
 
-
-    "blood_rotn")
-      STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/692850/" \
-      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-      run "/drive_d/SteamLibrary/steamapps/common/Bloodstained Ritual of the Night/BloodstainedRotN.exe"
-      ;;
     "hollow_knight")
-      STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/692850/" \
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/hollow_knight/" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-      run "/drive_d/SteamLibrary/steamapps/common/Hollow Knight/hollow_knight.x86_64.exe"
+       run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-proton.ahk"
+       # run "C:\Program Files (x86)\Cheat Engine 6.7\Cheat Engine.exe"
       ;;
+    "proton_bc")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/dev/BCompare3/BComp.exe"
+      ;;
+
 
     # xcross wine to linux
     "open-win")
@@ -905,7 +1068,8 @@ function run() {
 
       # echo "$udg_file3" | xsel -b 
       # msgbox "$file";
-      clipit "$file";
+      # clipit $file
+      echo "$file" |xsel -i ;
 
       ;;
 
@@ -937,7 +1101,24 @@ function run() {
 
     "apt-pm")
       sudo -S GTK_THEME=Flat-Remix-GTK-Red synaptic "$args"
+      ;;   
+
+    "diskgen")
+      # Alternatives to DiskGenius
+      # GParted. Extremely powerful partition manager. ...
+      # TestDisk. TestDisk is a powerful free data recovery software! ...
+      # MiniTool Partition Wizard. ...
+      # Macrium Reflect. ...
+      # PhotoRec. ...
+      # Eraser. ...
+      # Know any more alternatives to DiskGenius? ...
+      # gnome-disk-utility.
+      # bash -c "env GTK_THEME=Arc gparted"
+      sudo -S GTK_THEME=Arc gparted "$args"
       ;;      
+
+
+      
 
     "dconf")
       killall dconf-editor
@@ -965,9 +1146,9 @@ function run() {
       ;;
 
     "subl")
-      sudo GTK_THEME=Arc subl -n ${@:2}
+      GTK_THEME=Arc subl -n ${@:2}
       ;;  
-    "subl-root")
+    "subl_root")
       sudo GTK_THEME=Flat-Remix-GTK-Red subl -n ${@:2}
       ;;  
 
@@ -1053,6 +1234,8 @@ function updatesh() {
   sudo ls ~/.bash_aliases
   sudo ls /root/.bash_aliases
   source ~/.bash_aliases
+
+  start paplay /usr/share/sounds/ubuntu/notifications/Positive.ogg
 }
 
 function update_desktop_lnk() {
@@ -1066,6 +1249,7 @@ function update_desktop_lnk() {
 }
 
 function update_apt_repo() {
+  sudo apt-get clean && sudo apt-get update
   sudo apt update
 }
 
@@ -1074,6 +1258,20 @@ function sysinfo() {
   uname -a
   # lsb_release -c
   # uname -r
+}
+
+function systemd-analyze-helpers() {
+# 使用system命令查看开机用时
+  sudo systemd-analyze
+  # 查看具体程序用时
+  sudo systemd-analyze blame
+  # 禁用一些服务如plymouth相关的两个。
+  sudo systemctl mask plymouth-quit-wait.service
+  # 恢复是把mask 改用unmask.
+  # 这个服务是与开机动画相关的，占时间长。并且没用。不过去了以后总感到电脑好似死机了。
+  # 禁用NetworkManager-wait-online.service这个服务网络服务并不会产生不良影响
+  sudo systemctl disable NetworkManager-wait-online.service
+
 }
 
 function testsh() {
