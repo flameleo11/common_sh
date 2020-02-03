@@ -1,0 +1,67 @@
+
+1
+diff set git to icdiff
+
+2
+export my path  to path
+/home/me/bin
+/drive_d/work/bin
+/drive_d/app/bin
+/drive_d/bin
+
+or using /usr/local/bin
+
+
+3
+dir  ls   
+find with all path
+
+4 
+todo emety trash function
+
+5
+
+re read count_disk_usage 
+
+
+6 
+sound  function 
+seems like doesnt support 
+path like this ~/xxx.mp4 
+but absolve path
+
+
+7
+rename 
+   update_apt_repo
+maybe update apt all package or repo info
+
+
+8 
+check python apt
+
+
+9 
+index.sh export path 
+rethink
+
+
+			function addToPATH {
+			  case ":$PATH:" in
+			    *":$1:"*) :;; # already there
+			    *) PATH="$1:$PATH";; # or PATH="$PATH:$1"
+			  esac
+			}
+
+			addToPATH /Applications/AIRSDK_Compiler/bin
+			addToPATH ~/.local/lib/npm/bin
+
+
+			旁注：.bashrc不是设置$PATH或其他任何环境变量的正确位置。环境变量应在中设置~/.profile。请参阅应使用哪些安装文件来通过bash设置环境变量？，.bashrc和.bash_profile之间的区别。
+
+			分享编辑
+
+
+10
+fix dbl .sh by new function
+

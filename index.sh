@@ -1,10 +1,8 @@
-# call by Terminal
 # link by ~/.bash_aliases
+# use for Terminal
 
-
-
-if [ -f /home/me/app/bin/common.sh ]; then
-    . /home/me/app/bin/common.sh
+if [ -f /drive_d/work/bin/common.sh ]; then
+    . /drive_d/work/bin/common.sh
 fi
 
 if ! [ "$(ps -ocommand= -p $PPID | awk '{print $1}')" == 'script' ]; then
