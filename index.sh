@@ -1,7 +1,7 @@
 # call by Terminal
 # link by ~/.bash_aliases
 
-export PATH="/home/me/app/bin:$PATH"
+
 
 if [ -f /home/me/app/bin/common.sh ]; then
     . /home/me/app/bin/common.sh
@@ -13,8 +13,9 @@ if ! [ "$(ps -ocommand= -p $PPID | awk '{print $1}')" == 'script' ]; then
   record_bash_log
 fi
 
-if [ $TILIX_ID ]; then
-	cd ~/tmp
-fi
+# if [ $TILIX_ID ]; then
+# 	# cd ~/tmp
+# 	# 会导致新建窗口时 无法继承上一个窗口路径
+# fi
 
 

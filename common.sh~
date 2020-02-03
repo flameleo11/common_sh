@@ -4,14 +4,12 @@ export MY_STEAM_PROTON="/drive_d/SteamLibrary/steamapps/common/Proton 4.11/"
 export nul="/dev/null"
 
 # fast char option
+alias c='clear'
 alias g='grep -i $*'
 alias gn='grep -iv $*'
-alias gz='grep -iz $*'
-
 alias rm='rm -i '
-alias c='wc -l'
 
-alias t='type'
+alias t='type '
 alias r='updatesh'
 alias rd='update_desktop_lnk'
 alias ra='update_apt_repo'
@@ -47,10 +45,8 @@ alias pid='ps -aux |g $*'
 
 # alias var='echo `$$1`'
 
-# choose app
+# hotkey
 alias calc='kcalc'
-alias diff='icdiff'
-
 alias taskmgr='gnome-system-monitor'
 alias explorer='xdg-open'
 
@@ -128,7 +124,6 @@ function clean() {
 }
 
 function bakcrash() {
-  mkdir -p /var/crash/mylog
   pushd /var/crash
   ls
   sudo mv *.crash mylog
@@ -250,10 +245,10 @@ function dir() {
   # bg_ pushd $*
 
   # no recursive
-  # ls $PWD/$*  
-  ls -xm | head -n 2
+  # ls $PWD/$*    
+
   # recursive
-  # find_in $*
+  find_in $*
   # bg_ popd
 }
 
@@ -270,6 +265,7 @@ function find_in() {
 # ls show all file 
 alias l1='ls -1'
 alias la='ls -a'
+alias dir='ls -A1'
 alias ll='ls -halF'
 alias lnode='ls --inode'
 
@@ -669,25 +665,24 @@ function apt_update_single() {
   echo 111
 }
 
-
-function emety_trash() {
-  echo /home/me/.local/share/Trash/
-}
-
-
-
 function giveme() {
   rem get current folder and all files permission
   local name=$(whoami)
-  local dest=''
-  if [ -z "$*" ]; then
-    dest='.'
-  else
-    dest="$1"
-  fi 
+  echo sudo chown -hR $name:$name .
+  sudo chown -hR $name:$name .
   # chmod ug+rwx -R $*
-  echo sudo chown -hR $name:$name $dest
-  sudo chown -hR $name:$name $dest
+}
+
+function ownthis() {
+  rem get current fold permission
+  sudo chown -hR me:me $*
+  # chmod ug+rwx -R .
+}
+
+function setowner() {
+  # start lantern
+  sudo chown -hR $* .
+  chmod ug+rwx -R .
 }
 
 function getchmod() {
@@ -699,8 +694,7 @@ function getchmod() {
 
 
 function x() {
-  # sudo chmod ug+rwx -R $*
-  sudo chmod ugo+rx -R $*
+  sudo chmod ug+rwx -R $*
 }
 
 
@@ -751,7 +745,6 @@ function xcursor-format() {
   echo "[OK] convert to windows cursor like "
 }
 
-
 # mkdir && touch
 function ptouch() {
   local dir=`dirname "$1"`
@@ -765,17 +758,6 @@ function mp() {
   mkdir -p $1
   ls $1
 }
-
-
-function count_disk_usage() {
-  find -mtime -10 -type f -exec du '{}' \; | awk '{s+=$1} END {print s}'
-}
-
-function dsize() {
-  du -h
-}
-
-
 
 function cf() {
   echo $1
@@ -801,28 +783,6 @@ function string_camel() {
   x=${x,,}
   echo ${x^}
 }
-
-
-function string_split() {
-  export IFS=";"
-  sentence="one;two;three"
-  for word in $sentence; do
-    echo "$word"
-  done
-}
-
-
-function sep() {
-  # str_split : /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
-  # echo ''
-  local str="${*:2}"
-  export IFS="$1"
-  for word in $str; do
-    echo "$word"
-  done
-}
-
-
 
 function pushf() {
   echo $1
@@ -932,10 +892,8 @@ function sound() {
   # Rhodes.ogg
   # Slick.ogg
   # Xylo.ogg
-
-  echo paplay 
-  # paplay $dir/$wav
-  paplay ~/Music/effect/notifications/Positive.ogg &
+  echo paplay $dir/$wav
+  paplay $dir/$wav
 
   # paplay /usr/share/sounds/alsa/Side_Right.wav
 }
@@ -1160,21 +1118,20 @@ function run() {
       ;;
 
     "fs")
-      GTK_THEME=Flat-Remix-GTK-Green thunar "$args"
+      GTK_THEME=Flat-Remix-GTK-Green nautilus --new-window "$args"
       ;;
     "fs-root")
-      sudo -S GTK_THEME=Flat-Remix-GTK-Yellow thunar "$args"
+      sudo -S GTK_THEME=Flat-Remix-GTK-Red nautilus --new-window "$args"
       ;;
 
 
     "fs_1")
-      nautilus -q 
-      start env GTK_THEME=Flat-Remix-GTK-Green-Dark nautilus "$args"
+      thunar -q 
+      start env GTK_THEME=Flat-Remix-GTK-Blue thunar "$args"
       ;;
     "fs_1_root")
       sudo nautilus -q 
-      # env GTK_THEME=Flat-Remix-GTK-Red
-      start sudo nautilus "$args"
+      start sudo env GTK_THEME=Flat-Remix-GTK-Yellow-Dark nautilus "$args"
       ;;
 
     "apt-pm")
@@ -1327,11 +1284,8 @@ function update_desktop_lnk() {
 }
 
 function update_apt_repo() {
-  sudo apt-get clean
-   # && sudo apt-get update
+  sudo apt-get clean && sudo apt-get update
   sudo apt update
-  echo [upgradable]
-  sudo apt list --upgradable
 }
 
 function sysinfo() {

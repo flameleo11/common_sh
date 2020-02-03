@@ -1,0 +1,292 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"COPY",
+				"winx-copy-path"
+			],
+			[
+				"sbu",
+				"SublimeText3207"
+			],
+			[
+				"subl",
+				"sublime_text"
+			],
+			[
+				"Flat-Remix-GTK-R",
+				"Flat-Remix-GTK-Red-Dark"
+			],
+			[
+				"his",
+				"history"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"set bash",
+				"Set Syntax: Bourne Again Shell (bash)"
+			],
+			[
+				"setbash",
+				"Set Syntax: Bourne Again Shell (bash)"
+			],
+			[
+				"shell",
+				"Set Syntax: Bourne Again Shell (bash)"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 325.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/me/Documents/tmp/ttf-mscorefonts-installer ttf-mscorefonts-instal",
+		"/drive_d/work/bin/index.sh",
+		"/drive_d/work/tmp/t1.js",
+		"/drive_d/work/tmp/t1.lua",
+		"/etc/apt/sources.list.d/amdgpu-pro-local.list",
+		"/drive_d/work/config/source.list Ubuntu 18.04 国内源.txt",
+		"/etc/apt/sources.list.all-cn",
+		"/etc/apt/sources.list.d/rabbitvcs-ubuntu-ppa-bionic.list.save",
+		"/etc/apt/apt.conf.d/01proxy",
+		"/etc/apt/sources.list.d/rabbitvcs-ubuntu-ppa-bionic.list",
+		"/usr/bin/meld",
+		"/home/me/.bashrc",
+		"/mnt/D:/game/run-proton-cmd-readme.txt",
+		"/mnt/D:/work/config/imwheelrc",
+		"/mnt/D:/app/bin/common.sh",
+		"/mnt/D:/work/txt/t1 change primary-color secondary-color in desktop background.txt",
+		"/home/me/app/bin/common.sh",
+		"/home/me/app/bin/run.sh",
+		"/home/me/app/bin/index.sh",
+		"/home/me/Documents/config/dash to pannel settings - blue.ini",
+		"/home/me/app/bin/bash-log-watch.sh",
+		"/home/me/work/bash/create windows like cursor by link.sh",
+		"/home/me/work/bash/t1 log script.sh",
+		"/home/me/app/bin/open.sh",
+		"/home/me/Documents/bash-log/bash-2019_12_23_01_31_41.log",
+		"/home/me/app/bin/lnk-my-bash_aliases.sh",
+		"/home/me/.custom_aliases",
+		"/home/me/.bash_history",
+		"/home/me/q",
+		"/home/me/typescript",
+		"/home/me/=time_log",
+		"/home/me/Documents/bash-log/bash-2019_12_23.log",
+		"/home/me/work/test/t1.c",
+		"/home/me/work/test/t1.lua",
+		"/home/me/work/test/t1.sh",
+		"/drive_d/dev/SublimeText3207/subl.exe",
+		"/home/me/work/bash/t1 all arg two ways.sh",
+		"/home/me/work/bash/t1 diff func arg and shell arg global .sh",
+		"/home/me/.bash_aliases",
+		"/home/me/Documents/doc/steam devices.txt",
+		"/etc/sudoers",
+		"/drive_d/app/BCompare301/clear.reg",
+		"/root/index.html",
+		"/root/.abc.sh",
+		"/root/abc.sh",
+		"/home/me/.steam/steam/steamapps/compatdata/idlist.txt",
+		"/home/me/.steam/steam/steamapps/compatdata/692850/pfx/drive_c/Program Files (x86)/Cheat Engine 6.7/Cheat Engine.exe",
+		"/home/me/work/bash/.bash_aliases",
+		"/media/me/GIT/linux/install-list.txt",
+		"/media/me/GIT/dev/apache-ant-1.9.4/manual/installlist.html",
+		"/home/me/work/bash/t1.sh",
+		"/media/me/GIT/Documents/bookmark/chrome bookmark backup.txt",
+		"/home/me/work/bash/30 Handy Bash Shell Aliases For Linux.sh",
+		"/home/me/work/bash/10 handy Bash aliases.sh",
+		"/home/me/Documents/flameshot.conf",
+		"/etc/proxychains.conf",
+		"/etc/apt/sources.list",
+		"/home/me/sudo",
+		"/etc/passwd",
+		"/etc/proxychains4.conf"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "list-apt-remove.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/.bash_aliases"
+			],
+			[
+				".bash",
+				".bash_aliases"
+			],
+			[
+				"sublime.bu",
+				".config/sublime-text-3/Packages/User/custom_aliases.sublime-build"
+			],
+			[
+				".custom_",
+				".custom_aliases"
+			],
+			[
+				"custom.su",
+				".config/sublime-text-3/Packages/User/custom_aliases.sublime-build"
+			],
+			[
+				"sublibuild",
+				".config/sublime-text-3/Packages/User/custom_aliases.sublime-build"
+			],
+			[
+				".cu",
+				".custom_aliases"
+			],
+			[
+				".",
+				".bashrc"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/proj/bash_alias.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 286.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
