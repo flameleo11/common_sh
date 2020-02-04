@@ -16,6 +16,7 @@ alias r='updatesh'
 alias rd='update_desktop_lnk'
 alias ra='update_apt_repo'
 alias pc='sysinfo'
+alias dbl='locate_with_update'
 
 # function
 alias sudo='sudo '
@@ -26,7 +27,6 @@ alias xcopy='xargs cp -t $*'
 # alias va='${BASH_ALIASES[ve]}'
 # alias vi='!$*'
 
-alias dbl='sudo updatedb && locate'
 alias p='ping $1 -c 5'
 
 
@@ -233,6 +233,10 @@ function delete_all_link() {
   find . -type l |xargs rm -f
 }
 
+function locate_with_update() {
+  # msgbox "$*" 
+  sudo updatedb && locate -i -e "$*" 
+}
 
 function find_by_type() {
   find . -type l 
@@ -256,6 +260,7 @@ function dir() {
   # find_in $*
   # bg_ popd
 }
+
 
 function find_in() {
   if [ -z "$*" ]; then

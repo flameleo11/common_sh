@@ -1,22 +1,8 @@
-1.txt
-2.txt
-3.txt
-apt-get-help.txt
-apt_remove_01_24.log
-apt_remove_01_25.log
-bash
-bash-log-watch.sh
-bcomp
-check-apt-remove-dpkg-log.sh
-common.sh
-custom-app.sh
-index.sh
-list-apt-remove.sh
-list-apt-remove.sublime-workspace
-open.sh
-run.sh
-showargs
-st3.sh
-subl
-t1.js
-t1.sh
+111 49
+111
+333 /drive_d/work/everything search copy/t2.vala work
+333 /drive_d/work/everything search copy/t2.vala,work
+aa22
+444 222
+444 /drive_d/work/everything search copy/t2.vala
+Binary file (standard input) matches
