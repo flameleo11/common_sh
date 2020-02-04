@@ -6,10 +6,6 @@
 # why alias in sbin sh be called not working
 # alias dbl='sudo updatedb && locate'
 
-function dbl() {
-  sudo updatedb && locate $* 
-}
-
 function msgbox() {
   gxmessage "args:
   1 $1
@@ -26,18 +22,6 @@ function print() {
   return 0
 }
 
-function g() {
-  # print 555 $1
-  grep -i --null --color=never $*
-}
-
-function fs_main() {
-  # msgbox "$*" 
-  # print 444 "$*" 
-  # --null not good , output a joined bin text
-  locate -i -e "$*" 
-}
-
 # vala  "-v svg$" for gn grep
 function fs_multi() {
   local args="$@"
@@ -47,8 +31,10 @@ function fs_multi() {
   # msgbox total: "$@"  len: ${#text}
 
   if [ -z "$2" ]; then
+    # msgbox 111 $1 $2 $3
     fs_main $1
   elif [ -z "$3" ]; then
+    # msgbox 222 "$1" "$2" "$3"
     fs_main $1 |g $2
   elif [ -z "$4" ]; then
     fs_main $1 |g $2 |g $3
@@ -86,9 +72,21 @@ function main() {
   return 0
 }
 
-# msgbox "$*" 
-main $*
-# main "$@"
+function fs_main() {
+  # msgbox "$*" 
+  # print 444 "$*" 
+  # --null not good , output a joined bin text
+  locate -i -e "$*" 
+}
+
+function g() {
+  # print 555 $1
+  grep -i --null --color=never "$*"
+}
+
+# msgbox $*
+# main $*
+main "$@"
 
 # main $(echo "$*")
 
@@ -98,8 +96,9 @@ main $*
 
 # "everything png" "as  df"}
 # main $(escape_args $*)
-
+# 
 # main everything png
 
 # locate float|g p |echo -n
 # msgbox "$@" 
+# main "$@" 
