@@ -1,8 +1,0 @@
-111 49
-111
-333 /drive_d/work/everything search copy/t2.vala work
-333 /drive_d/work/everything search copy/t2.vala,work
-aa22
-444 222
-444 /drive_d/work/everything search copy/t2.vala
-Binary file (standard input) matches

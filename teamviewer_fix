@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# bash -c "sleep 10 && firefox"
+
+sleep 10
+# sudo apt install --reinstall teamviewer
+
+
+
+# bash /drive_d/work/bin/teamviewer_fix

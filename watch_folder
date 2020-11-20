@@ -1,0 +1,208 @@
+#!/usr/bin/python3.6
+
+import os
+import sys
+import re
+import random
+
+from time import sleep
+import time
+from threading import Timer
+import datetime
+
+
+import logging
+import watchdog
+from pathlib import Path
+
+
+from watchdog.observers import Observer
+from watchdog.events import LoggingEventHandler
+from watchdog.events import FileSystemEventHandler
+from shutil import copyfile
+
+#-----------------------------------------------------------
+#- func
+#-----------------------------------------------------------
+
+
+def error(msg):
+	raise Exception(msg)
+	pass
+
+def assert2(exp, msg):
+	if not exp:
+		error(msg)
+		return
+	pass
+
+def now():
+	return time.time()
+
+
+def setTimeout(func, millisec):
+	t = Timer(millisec/1000, func)
+	t.start()
+	return t
+
+def createEventMerger(max_wait_interval, after_merge):
+	m_arr = []
+	m_timers = []
+
+	def callback():
+		m_timer = 0
+		after_merge(m_arr)
+		m_arr.clear()
+		pass
+
+	def push(eventdata):
+		m_arr.append(eventdata)
+
+		if (len(m_timers) > 0):
+
+			m_timers.pop().cancel()
+			pass
+
+		t = setTimeout(callback, max_wait_interval)
+		m_timers.append(t)
+
+		pass
+
+	return push
+
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
+
+def std_dir(dir):
+	return os.path.dirname(dir)
+
+g_dest_folder = std_dir("/drive_d/BattleNetLibrary/Warcraft III/My Documents/Warcraft III/Maps/test/")
+
+
+class MyHandler(FileSystemEventHandler):
+	m_max_wait_interval = 2000  # max trigger wait delay
+	m_lasttime = 0
+	m_path_dict = {}
+
+
+
+	def on_any_event(self, e):
+		tag       = e.event_type
+		file_path = e.src_path
+		curtime = now()
+		currentDT = datetime.datetime.now()
+		sz_date = currentDT.strftime("%Y-%m-%d %H:%M:%S")
+		fs_size = 0
+
+
+		try:
+			state     = Path(file_path).stat()
+			fs_size   = state.st_size
+			fs_size = sizeof_fmt(fs_size)
+		except:
+		  fs_size = ""
+		# finally:
+		#   fs_size = fs_size
+
+		if tag == 'deleted':
+			print( ("[-] {:s} {:20s}  {:s}").format(sz_date, fs_size, file_path) )
+			return
+
+		if tag == 'created':
+			print( ("[+] {:s} {:20s}  {:s}").format(sz_date, fs_size, file_path) )
+			pass
+
+
+		if tag == 'modified':
+			print( ("[*] {:s} {:20s}  {:s}").format(sz_date, fs_size, file_path) )
+			pass
+
+		# if not ( tag == 'created' or tag == 'modified' ):
+		# 	# print(222, tag, file_path)
+		# 	return
+		# if not ( file_path.endswith(".w3m") or file_path.endswith(".w3x") ):
+		# 	# print(333, tag, file_path)
+		# 	return
+
+		# def callback(arr_eventdata):
+		# 	w3m_path = arr_eventdata[-1]
+		# 	# copy file_path to war3 running map folder
+		# 	print("[sync] copy:", w3m_path)
+		# 	copyfile(w3m_path, g_dest_folder+"/"+os.path.basename(w3m_path))
+		# 	pass
+
+		# if self.m_lasttime == 0:
+		# 	self.m_lasttime = curtime
+		# 	pass
+
+		# delta = round(curtime - self.m_lasttime, 2)
+		# print("[info] event delta:", delta)
+		# self.m_lasttime = curtime
+
+		# if not(file_path in self.m_path_dict.keys()):
+		# 	self.m_path_dict[file_path] = createEventMerger(self.m_max_wait_interval, callback)
+
+		# push = self.m_path_dict[file_path]
+		# push(file_path)
+
+		pass
+
+
+
+#-----------------------------------------------------------
+#- config
+#-----------------------------------------------------------
+
+# arg_count = len(sys.argv)
+# assert2(arg_count>1, "[assert] no watch folder input")
+# exename = sys.argv[0]
+# path = sys.argv[1]
+
+#-----------------------------------------------------------
+#- main
+#-----------------------------------------------------------
+
+def main():
+	path = '.'
+	if len(sys.argv) > 1:
+		path = sys.argv[1]
+
+	print(path)
+
+	if not os.path.exists(path):
+		print("invalid path:", path)
+		return
+
+	logging.basicConfig(level=logging.INFO,
+	                    format='%(asctime)s - %(message)s',
+	                    datefmt='%Y-%m-%d %H:%M:%S')
+
+	log_event_handler = LoggingEventHandler()
+	fs_event_handler = MyHandler()
+
+	observer = Observer()
+	observer.schedule(fs_event_handler, path, recursive=True)
+	# observer.schedule(log_event_handler, path, recursive=True)
+	observer.start()
+
+
+	print("Now my watch begins: \n", path.replace('/', '\\'))
+
+	try:
+	    while True:
+	        sleep(1)
+	except KeyboardInterrupt:
+	    observer.stop()
+
+	observer.join()
+	print("My watch is ended. ", path)
+	pass
+
+
+main()
+
+

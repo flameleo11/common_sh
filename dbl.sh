@@ -63,11 +63,11 @@ function main() {
 
   if [ ${#text} -le 2 ]; then
     # msgbox 111
-    fs_multi "$@" | head -n 30
+    fs_multi "$@" | uniq | head -n 30
   else
     # msgbox total: "$@"  len: ${#text}
     # msgbox 222
-    fs_multi "$@" | head -n 60
+    fs_multi "$@" | uniq | head -n 60
   fi
   return 0
 }
@@ -76,15 +76,20 @@ function fs_main() {
   # msgbox "$*" 
   # print 444 "$*" 
   # --null not good , output a joined bin text
-  locate -i -e "$*" 
+  locate -i -e "$*"
+  # sudo find / -name "$*"
+  # find -i -e "$(realpath "$*")"
+
+  # msgbox "$(realpath "$*")" 
+  # msgbox "$*"
 }
 
 function g() {
   # print 555 $1
-  grep -i --null --color=never "$*"
+  grep -i --null --color=never $*
 }
 
-# msgbox $*
+# msgbox "$@"
 # main $*
 main "$@"
 

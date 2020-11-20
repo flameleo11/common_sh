@@ -1,0 +1,56 @@
+{
+  "inbounds": {
+    "port": 41090,
+    "listen": "127.0.0.1",
+    "protocol": "socks",
+    "settings": {
+      "udp": true
+    }
+  },
+  "outbounds": {
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [{
+        "address": "47.244.169.227",
+        "port": 3076,
+        "users": [{
+          "id": "a90be70d-65b4-4762-a208-bb6c95593104",
+          "alterId": 64,
+          "level": 1
+        }]
+      }]
+    }
+  },
+  "outboundDetour": [{
+    "protocol": "freedom",
+    "tag": "direct",
+    "settings": {}
+  }],
+  "routing": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPOnDemand",
+      "rules": [{
+        "type": "field",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.0.2.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "198.51.100.0/24",
+          "203.0.113.0/24",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "outboundTag": "direct"
+      }]
+    }
+  }
+}

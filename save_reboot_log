@@ -1,0 +1,54 @@
+#!/bin/bash
+
+
+# use for GUI
+if [ -f /drive_d/work/bin/common.sh ]; then
+    . /drive_d/work/bin/common.sh
+fi
+
+
+sleep 20
+
+
+# /home/me/Documents/log
+# cp /var/log/wtmp /var/log/wtmp.save
+# /home/me/Documents/log/reboot_log
+
+
+
+function msgbox() {
+  gxmessage "args:
+  1 $1
+  2 $2
+  3 $3
+  4 $4
+  5 $5
+  6 $6
+  7 $7";
+}
+
+function print() {
+  # echo $*
+  return 0
+}
+
+  # command 'last' from deb util-linux
+
+last -R -s 2019-05-26 11:00 -t 2019-05-27 13:00
+last reboot -RF -s 2019-01-26 11:00 -t 2020-05-27 13:00
+
+function main() {
+	local file="/drive_d/log/reboot_log/user_$EUID-$(date +"%Y_%m").log"
+	if [ ! -f "$file" ]; then
+		touch_path "$file"
+	fi
+
+
+  # echo $*
+  return 0
+}
+
+msgbox "${@:2}"
+
+
+# bash /drive_d/work/bin/teamviewer_fix

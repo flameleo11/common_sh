@@ -3,12 +3,37 @@
 export MY_STEAM_PROTON="/drive_d/SteamLibrary/steamapps/common/Proton 4.11/"
 export nul="/dev/null"
 
+# /home/me/.profile set path
+# TODO checkout if reboot will load .profile 
+# already using mongod is /usr/bin/mongod by apt install
+# PATH="$PATH:/drive_d/dev/mongodb4/bin"
+
+
+# export WINEARCH=
+# export WINEPREFIX=
+
+function msgbox() {
+  # bash -c notify-send ${*:2}
+  # zenity --info --text="${*:1}" --width=1000 --height=400 &
+  # /usr/bin/xmessage
+  gxmessage "args:
+  1 $1
+  2 $2
+  3 $3
+  4 $4
+  5 $5
+  6 $6
+  7 $7";
+  export PATH="$PATH:/opt/wine-staging/bin/"
+}
+# msgbox $*
+
 # fast char option
 alias g='grep -i $*'
 alias gn='grep -iv $*'
 alias gz='grep -iz $*'
 
-alias rm='rm -i '
+alias rm='rm -i'
 alias c='wc -l'
 
 alias t='type'
@@ -62,7 +87,10 @@ alias hist='history | tail $*'
 alias startup='sudo gnome-session-properties'
 alias pause='read -p "Press enter to continue"'
 
-
+alias cnpm="npm --registry=https://registry.npm.taobao.org \
+--cache=$HOME/.npm/.cache/cnpm \
+--disturl=https://npm.taobao.org/dist \
+--userconfig=$HOME/.cnpmrc"
 
 
 function lsnet() {
@@ -74,20 +102,26 @@ function my_bash_doc_helps() {
   even if some of the arguments themselves contain spaces
   echo "${@:2}"
   rem as a single argument with spaces
-  echo "${*:2}"    
+  echo "${*:2}"
+}
+
+# todo
+function var() {
+  echo $$1
+
 }
 
 function lsproxy() {
   echo $http_proxy
-  echo $https_proxy
+  echo $HTTPS_PROXY
   echo $ftp_proxy
   echo $all_proxy
 }
 
 function setproxy() {
-  export http_proxy=http://127.0.0.1:37629/
-  export https_proxy=https://127.0.0.1:37629/
-  export ftp_proxy=ftp://127.0.0.1:37629/
+  export http_proxy=http://127.0.0.1:46587/
+  export https_proxy=https://127.0.0.1:46587/
+  export ftp_proxy=ftp://127.0.0.1:46587/
   export socks_proxy=https://127.0.0.1:46587/
   export all_proxy=$socks_proxy
 
@@ -104,6 +138,41 @@ function setproxy() {
   echo $https_proxy
   echo $ftp_proxy
   echo $all_proxy
+}
+
+
+function print_date() {
+  # put current date as yyyy-mm-dd in $date
+  date=$(date '+%Y-%m-%d')
+
+  # put current date as yyyy-mm-dd HH:MM:SS in $date
+  date=$(date '+%Y-%m-%d %H:%M:%S')
+
+  # print current date directly
+  echo $(date '+%Y-%m-%d')
+}
+
+
+
+function dns() {
+  nslookup google.com
+}
+
+
+function port() {
+  # i net-tools
+  # netstat -bano | more
+  # netstat -bano | grep LISTENING
+  # sudo nmap -sT -O localhost
+  # netstat -nat | grep LISTEN
+  # sudo lsof -i -P -n
+  # sudo ss -tulw
+  # sudo ss -tulwn
+
+  # netstat -tulpn
+  sudo lsof -i -P -n
+  # sudo ss -tulwn
+
 }
 
 function location_auto_startup() {
@@ -169,31 +238,29 @@ function cmd() {
   else
     echo sudo gnome-terminal $*
     sudo GTK_THEME=Arc gnome-terminal $*
-  fi  
+  fi
 }
 
 function fs() {
+  # nautilus -q
   if [ -z "$*" ]; then
     echo nautilus .
-    # nautilus -q
     run fs_1 .;
   else
     echo nautilus $*
-    # sudo nautilus -q
     run fs_1 $*;
-  fi  
+  fi
 }
 
 function FS() {
+  sudo nautilus -q
   if [ -z "$*" ]; then
     echo sudo nautilus .
-    # nautilus -q
     run fs_1_root .;
   else
     echo sudo nautilus $*
-    # sudo nautilus -q
     run fs_1_root $*;
-  fi  
+  fi
 }
 
 function st3() {
@@ -201,12 +268,12 @@ function st3() {
     if [[ . -ef ~ ]]; then
       run subl;
     else
-      run subl .;   
+      run subl .;
     fi
   else
     echo subl $*
     run subl $*;
-  fi  
+  fi
 }
 
 function ST3() {
@@ -216,7 +283,7 @@ function ST3() {
   else
     echo subl $*
     run subl_root $*;
-  fi  
+  fi
 }
 
 function vscode() {
@@ -226,7 +293,7 @@ function vscode() {
   else
     echo code $*
      code $*
-  fi  
+  fi
 }
 
 function delete_all_link() {
@@ -234,17 +301,21 @@ function delete_all_link() {
 }
 
 function locate_with_update() {
-  # msgbox "$*" 
-  sudo updatedb && locate -i -e "$*" 
+  # msgbox "$*"
+  sudo updatedb && locate -i -e "$*"
 }
 
 function find_by_type() {
-  find . -type l 
+  find . -type l
 }
 
 function ls_pip_demo() {
   ls | grep -i "$*"
   ls | grep -iZ "$*" | xargs sudo rm -r
+}
+
+function watch_log_file() {
+  tail -f $1;
 }
 
 function dir() {
@@ -254,8 +325,9 @@ function dir() {
   # bg_ pushd $*
 
   # no recursive
-  # ls $PWD/$*  
-  ls -xm | head -n 2
+  # ls $PWD/$*
+  # ls -xm | head -n 2
+  find "$(realpath .)"
   # recursive
   # find_in $*
   # bg_ popd
@@ -269,10 +341,10 @@ function find_in() {
   else
      find $* -type f
     echo find $*
-  fi  
+  fi
 }
 
-# ls show all file 
+# ls show all file
 alias l1='ls -1'
 alias la='ls -a'
 alias ll='ls -halF'
@@ -282,7 +354,7 @@ function lscolor() {
   local option="$1"
   if [ -z "$1" ]; then
     option="off"
-  fi  
+  fi
 
   case $option in
     off|"0")
@@ -300,9 +372,11 @@ function lscolor() {
 # # todo $0 $-1
 # function backwardshell() {
 #   ls | grep -Z "$*" | xargs sudo rm
-  
-#   ls /home/me/.pam_environment | xargs subl 
+
+#   ls /home/me/.pam_environment | xargs subl
 # }
+
+
 
 function change_xterm() {
   sudo update-alternatives --config x-terminal-emulator
@@ -333,9 +407,9 @@ function ver_term(){
       done
       ;;
   esac
-  ## If none of the version arguments worked, try and get the 
+  ## If none of the version arguments worked, try and get the
   ## package version
-  [ $found -eq 0 ] && echo "$term " $(dpkg -l $term | awk '/^ii/{print $3}')    
+  [ $found -eq 0 ] && echo "$term " $(dpkg -l $term | awk '/^ii/{print $3}')
 }
 
 # converts and saves youtube video to mp3
@@ -385,8 +459,8 @@ function ubuntu-adduser-or-deluser() {
 
 function add_inotify_max() {
   echo /etc/sysctl.conf append line
-  echo "fs.inotify.max_user_watches=1048576" 
-  
+  echo "fs.inotify.max_user_watches=1048576"
+
   echo "fs.inotify.max_user_watches=1048576" | sudo tee -a /etc/sysctl.conf
   sudo sysctl -p
 }
@@ -431,7 +505,9 @@ function install() {
 }
 
 function debi() {
-  sudo dpkg -i $* 
+  # gdebi
+  # /usr/bin/gdebi
+  sudo dpkg -i $*
   sudo apt-get install -f
 }
 
@@ -444,7 +520,7 @@ function reinstall() {
 
 alias v='ver_x96'
 function ver_x96() {
-  # sudo dpkg --add-architecture i386 
+  # sudo dpkg --add-architecture i386
   apt-cache policy $1
   apt-cache policy $1:i386
   apt-cache policy $1:amd64
@@ -468,6 +544,9 @@ alias ffi='force-reinstall'
 # ii libgnutls30:i386=3.5.18-1ubuntu1.3
 # ii libgnutls30:amd64=3.5.18-1ubuntu1.3
 
+
+
+
 function force-reinstall() {
   local ret=1
   mkdir -p ./deb && mv *.deb deb
@@ -480,7 +559,7 @@ function force-reinstall() {
   ret=$?
 
   pkgname=$(echo $fullname | awk -F ':|=' {'print $1'})
-  pkgname_arch=$(echo $fullname | cut -d "=" -f 1)  
+  pkgname_arch=$(echo $fullname | cut -d "=" -f 1)
 
   # if [[ $fullname =~ ":i386" ]]; then
   #    pkgarch=":i386"
@@ -501,20 +580,20 @@ function force-reinstall() {
   fi
 
   echo ls $pkgname*.deb
-  for deb in $(ls $pkgname*.deb); do 
+  for deb in $(ls $pkgname*.deb); do
     echo '[install]: '$deb
     echo       sudo dpkg -i --force-all $deb
     sudo dpkg -i --force-all $deb
-  done   
+  done
 
   # v $pkgname
   return 0
 }
 
 function ddd111() {
-  for deb in $(ls *.deb); do 
+  for deb in $(ls *.deb); do
     echo $deb
-  done   
+  done
 }
 
 function rdep() {
@@ -568,10 +647,10 @@ function apt-fix-broken() {
   # sudo apt update
   # apt list --upgradable
   apt list --upgradable
-  sudo apt autoremove 
+  sudo apt autoremove
   sudo dpkg --configure -a
-  sudo apt-get -f install 
-  # sudo dpkg --add-architecture i386 
+  sudo apt-get -f install
+  # sudo dpkg --add-architecture i386
   # sudo aptitude install wine-staging
     # sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
   # sudo apt-get install --install-recommends winehq-staging
@@ -590,9 +669,9 @@ function copyit() {
     echo [clipboard] copy: $PWD
     echo -n "$PWD" | xsel -bi
   else
-    echo [clipboard] copy: $* 
+    echo [clipboard] copy: $*
     echo -n "$*" | xsel -bi
-  fi   
+  fi
 }
 
 function xsel-help() {
@@ -601,16 +680,30 @@ function xsel-help() {
   # input copy to clipboard
   # clipit xxx
 
+  # copy
   # input to internal selection mem
   xsel -i < 1.txt
   echo xxx | xsel -i
   # apprend to ...
   echo xxx | xsel -a
 
-  # output
+  # output , paste
   xsel -o
   xsel
 }
+
+
+function gnome-shell-help() {
+  echo 1
+  gnome-shell --replace
+
+  echo 2
+  killall -3 gnome-shell
+  DISPLAY=:0 gnome-shell -r &
+}
+
+
+
 
 
 function change-gnome-shell-theme-config-css() {
@@ -637,7 +730,7 @@ function apt-levelup() {
 
 function apt-repo() {
   # add-apt-repository -y $1
-  echo add-apt-repository $1  
+  echo add-apt-repository $1
   echo apt-get update
   echo apt-get install -y $2 $3 $4 $5 $6 $7 $8 $9
 
@@ -660,7 +753,7 @@ function apt-from() {
 }
 
 function apt-update-install() {
-  sudo apt-get update 
+  sudo apt-get update
   sudo apt-get install -y $*
   ver $*
 }
@@ -669,7 +762,7 @@ function apt_update_single() {
   # for repo in "$@"; do
   #   echo $repo
   #   # sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/${repo}" \
-  #   # -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"    
+  #   # -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
   # done
   echo 111
 }
@@ -689,7 +782,7 @@ function giveme() {
     dest='.'
   else
     dest="$1"
-  fi 
+  fi
   # chmod ug+rwx -R $*
   echo sudo chown -hR $name:$name $dest
   sudo chown -hR $name:$name $dest
@@ -711,11 +804,21 @@ function x() {
 
 function start() {
   $* > $nul 2>&1 & disown
+  # jobs
+  # kill %1
+  # kill %2
+
+  # get last exit code
+  # ret=$?
+  # if [ $ret -eq 0 ]; then
 }
 
 # alias bg_='$* > /dev/null 2>&1 '
 function bg_() {
   $* > $nul 2>&1
+  # jobs
+  # kill %1
+  # kill %2
 }
 
 function xcursor-format() {
@@ -726,7 +829,7 @@ function xcursor-format() {
 
   pushd $d
 
-  cp row-resize  row-bak   
+  cp row-resize  row-bak
   cp col-resize  col-bak
   cp nesw-resize  nesw-bak
   cp nwse-resize  nwse-bak
@@ -758,19 +861,16 @@ function xcursor-format() {
 
 
 # mkdir && touch
-function ptouch() {
+alias mkdir_by_path='touch_path';
+
+function touch_path() {
   local dir=`dirname "$1"`
   local fname=`basename "$1"`
 
-  mkdir -p "$dir" && pushd "$dir" && touch "$fname" && popd
-  ls $1
+  mkdir -p "$dir"
+  touch "$1"
+  ls "$1"
 }
-
-function mp() {
-  mkdir -p $1
-  ls $1
-}
-
 
 function count_disk_usage() {
   find -mtime -10 -type f -exec du '{}' \; | awk '{s+=$1} END {print s}'
@@ -788,7 +888,7 @@ function cf() {
   # if [[ $ret -ne 0 ]]; then
     local dir=`dirname "$1"`
     cd $dir
-  # fi 
+  # fi
 }
 
 function string_upper() {
@@ -835,7 +935,7 @@ function pushf() {
   # if [[ $ret -ne 0 ]]; then
     local dir=`dirname "$1"`
     pushd $dir
-  # fi 
+  # fi
 }
 
 function compare_match_incase() {
@@ -843,7 +943,7 @@ function compare_match_incase() {
   # fname=`basename "$1"`
 
   echo $1, $2
-  
+
   if echo $1 |grep -i ^$(echo $2)$; then
       echo it works
   fi
@@ -904,20 +1004,6 @@ function debugmsg() {
 
 }
 
-function msgbox() {
-  # bash -c notify-send ${*:2}
-  # zenity --info --text="${*:1}" --width=1000 --height=400 &
-  # /usr/bin/xmessage
-  gxmessage "args:
-  1 $1
-  2 $2
-  3 $3
-  4 $4
-  5 $5
-  6 $6
-  7 $7";
-}
-
 function sound() {
   # aplay /usr/share/sounds/alsa/Side_Right.wav
   # paplay /usr/share/sounds/freedesktop/stereo/complete.oga
@@ -938,7 +1024,7 @@ function sound() {
   # Slick.ogg
   # Xylo.ogg
 
-  echo paplay 
+  echo paplay
   # paplay $dir/$wav
   paplay ~/Music/effect/notifications/Positive.ogg &
 
@@ -956,27 +1042,42 @@ function run() {
   case $name in
     # wine
       # WINEPREFIX="/drive_d/wine/dx9/" \
-      # WINEPREFIX=~/wine/win10/ 
+      # WINEPREFIX=~/wine/win10/
     "win-taskmgr")
       wine taskmgr
       ;;
     "win-subl")
+    #   STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
+    #   "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+    #    run "/drive_d/dev/SublimeText3207/subl.exe" -n
+      LANG=zh_CN.UTF-8 \
       wine "/drive_d/dev/SublimeText3207/subl.exe" -n
-      return 
+      return
       ;;
+
     "win-everything")
       wine "/drive_d/app/Everything-x64/Everything.exe"
       ;;
+
+    "potplayer")
+      wine "/drive_d/app/PotPlayer/PotPlayerMini.exe"
+      ;;
+
+
+
     "win-track_folder")
       wine "/drive_d/app/TrackFolderChanges/TrackFolderChanges.exe"
       ;;
-    "win-bc")
-      wine "/drive_d/dev/BCompare3/BComp.exe" "${@:2}"
+
+    "win-bc"|"proton_bc")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/dev/BCompare3/BComp.exe"
       ;;
 
 
     "win-bcomp-diff")
-      # /usr/bin/meld 
+      # /usr/bin/meld
       # /home/me/app/bin/bcomp
       # sdiff
       # icdiff
@@ -985,8 +1086,11 @@ function run() {
 
       # debugmsg "$2" "$3"
       # msgbox "$f1" "$f2"
-      wine "/drive_d/dev/BCompare3/BComp.exe" "$f1" "$f2"
-      ;;      
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/dev/BCompare3/BComp.exe" "$f1" "$f2"
+      ;;
+
     "win-bcomp-merge")
       local f1=$(winepath -w "$2")
       local f2=$(winepath -w "$3")
@@ -994,15 +1098,19 @@ function run() {
       local f4=$(winepath -w "$5")
 
       # debugmsg "$2" "$3"
-      debugmsg "$f1" "$f2" "$f3" "$f4"
-      msgbox "$*"
+      # debugmsg "$f1" "$f2" "$f3" "$f4"
+      # msgbox "$*"
+
       # WINEPREFIX="/drive_d/wine/dx9/" \
       # wine "/drive_d/dev/BCompare3/BComp.exe" "$f1" "$f2" "$f3" "$f4"
+      # ;;
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/dev/BCompare3/BComp.exe" "$f1" "$f2" "$f3" "$f4"
       ;;
 
-
     "win-install")
-      # /usr/bin/meld 
+      # /usr/bin/meld
       # /usr/bin/gxmessage
       # local f1=$(winepath -w "$2")
       # local f2=$(winepath -w "$3")
@@ -1011,7 +1119,7 @@ function run() {
       # debugmsg "$f1" "$f2"
       WINEPREFIX="/drive_d/wine/dx9/" \
       wine uninstaller
-      ;;  
+      ;;
 
     # proton
     "proton")
@@ -1055,82 +1163,157 @@ function run() {
       # STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/692850/" \
       # "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
       # run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/demo/test-joystick-demo.ahk"
-      
+
       GTK_THEME=Arc playonlinux "${@:2}"
       ;;
 
+    "war3-us-taskmgr")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/battle_net_war3_en" \
+      $mywine taskmgr
+      ;;
 
-      
-    "war3")
-      # STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3" \
-      # LANG="zh_CN.UTF-8" \
-      # "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-      # run "/drive_d/game/WC3-Installer-1-30_EN/Warcraft-III-Setup.exe" -opengl "$args"
-      # run "/drive_d/game/war3-121/War3.exe" -opengl "$args"
-      # run "/drive_d/game/war3-130/War3.exe" -opengl "$args"
+    "war3x-test")
+      # todo debug graphics, too dark
+      local map=$(winepath -w "$2")
+      # "/drive_d/BattleNetLibrary/Link to Warcraft III/Maps/test/last_test.w3m"
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/war3x-cn" \
+      $mywine "/drive_d/BattleNetLibrary/Warcraft III/x86_64/Warcraft III.exe" \
+      -launch -loadfile "$map" \
+      -windowmode windowed -mapdiff 1 -testmapprofile Red -fixedseed 1
+      ;;
 
-      
-      # export WINEPREFIX=~/wine/win10/ 
-      # export WINEARCH=win32
-      # export WINEPREFIX="/drive_d/wine/dx9"winetricks
+    "war3x-pm")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/warcraft-iii-reforged" \
+      $mywine "/drive_d/dev/ProcessMonitor/Procmon.exe"
+      ;;
 
-      # WINEPREFIX="/drive_d/wine/war3" WINEARCH=win32 \
-      # winecfg
-      # winetricks 
-      # wine uninstaller
-      # wine "C:\windows\system32\dxdiag.exe"
-      # winetricks --force dotnet40
-      # winecfg
-      # winetricks
-      # wine "C:\DirectX\Jun2010\DXSETUP.exe"
-      # wine "C:\windows\system32\dxdiag.exe"
-      
-      # LANG="zh_CN.UTF-8" 
-      # LANG="en_US.UTF-8" 
-      # LANG="en_US" 
+    "war3x-ce")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/warcraft-iii-reforged" \
+      $mywine "/drive_d/app/Cheat Engine 6.7/Cheat Engine.exe"
 
-      LANG="zh_CN.UTF-8" WINEPREFIX="/drive_d/wine/war3" WINEARCH=win32 \
-      wine "/drive_d/game/war3-130/War3.exe" -opengl "$args"
+      # 先启动lutris
+      # 然后 再启动这个ce 貌似加了 esync标记后 就可以启动了
+      # 明天在调试 找内存
+      ;;
 
-      # LANG="zh_CN.UTF-8" WINEPREFIX="/drive_d/wine/dx9" WINEARCH=win32 \
-      # wine "/drive_d/game/WC3-Installer-1-30_EN/Warcraft-III-Setup.exe"
+    "wow-ce")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/battle_net_war3_en" \
+      $mywine "/drive_d/app/Cheat Engine 6.7/Cheat Engine.exe"
 
       ;;
-    "worldedit")
+    "war3x-run")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/warcraft-iii-reforged" \
+      $mywine "$2" "${@:3}"
+
+      # 先启动lutris
+      # 然后 再启动这个ce 貌似加了 esync标记后 就可以启动了
+      # 明天在调试 找内存
+      ;;
+    "war3-ahk")
+      # local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      # WINEESYNC=1 \
+      # WINEPREFIX="/drive_d/LutrisGames/warcraft-iii-reforged" \
+      # $mywine
+      wine "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/drive_d/wine/.wine/drive_c/apps/Warkeys/WarKeys.ahk"
+      ;;
+    "war3x-ahk")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.0-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/warcraft-iii-reforged" \
+      $mywine "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/drive_d/work/AutoHotkey/war3x_world_editor_get_all_terrain.ahk"
+
+      # STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris/" \
+      # "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+      #  run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-proton.ahk"
+      ;;
+    "star2-ahk")
+      local mywine="/home/me/.local/share/lutris/runners/wine/lutris-5.4-x86_64/bin/wine"
+      WINEESYNC=1 \
+      WINEPREFIX="/drive_d/LutrisGames/starcraft2-TT5" \
+      $mywine "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/drive_d/work/AutoHotkey/star2_del_friends.ahk"
+
+      ;;
+
+
+    "war3"|"war3-win")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
+      LANG="zh_CN.UTF-8" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/game/war3-121/War3.exe" -windows -opengl "$args"
+      ;;
+    "war3-full")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
+      LANG="zh_CN.UTF-8" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/game/war3-121/War3.exe" -opengl "$args"
+       # -windows
+      ;;
+
+    "war3-run")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
+      LANG="zh_CN.UTF-8" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "${@:2}"
+      # msgbox "${@:2}"
+      ;;
+    "war3-we")
       STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
       LANG="zh_CN.UTF-8" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
        run "/drive_d/game/war3-121/worldedit.exe" -opengl "$args"
       ;;
-
+    "war3-cfg")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/war3/" \
+      LANG="zh_CN.UTF-8" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run regedit
+      ;;
 
     "proton-star")
       STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris/" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-       run "/drive_d/game/Stellaris2/stellaris-LAN.exe"
+       run "/drive_d/game/Stellaris/stellaris-LAN.exe"
        # run "D:\game\Stellaris2\stellaris-LAN.exe"
        # save location
        # /media/me/GIT1/game/Stellaris/Paradox Interactive/Stellaris
+      ;;
+    "proton-star2")
+      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris2/" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 5.0/proton" \
+       run "/drive_d/game/Stellaris2/stellaris-LAN.exe"
+       # run "/drive_d/game/Stellaris1/stellaris-LAN.exe"
       ;;
     "proton-star-ahk")
       STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/stellaris/" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
        run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-proton.ahk"
+       # run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-LAN.ahk"
        # run "C:\Program Files (x86)\Cheat Engine 6.7\Cheat Engine.exe"
       ;;
 
     "hollow_knight")
-      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/hollow_knight/" \
+      STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/367520" \
       "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-       run "/drive_d/app/AutoHotkey-v1/AutoHotkey.exe" "/home/me/work/AutoHotkey/stellaris-proton.ahk"
+       run "/drive_d/SteamLibrary/steamapps/common/Hollow Knight/hollow_knight.exe"
+      ;;
+    "hk-ce")
+      STEAM_COMPAT_DATA_PATH="/drive_d/SteamLibrary/steamapps/compatdata/367520" \
+      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
+       run "/drive_d/app/Cheat Engine 6.7/Cheat Engine.exe"
        # run "C:\Program Files (x86)\Cheat Engine 6.7\Cheat Engine.exe"
       ;;
-    "proton_bc")
-      STEAM_COMPAT_DATA_PATH="/drive_d/game/compatdata/proton/" \
-      "/drive_d/SteamLibrary/steamapps/common/Proton 4.11/proton" \
-       run "/drive_d/dev/BCompare3/BComp.exe"
-      ;;
-
 
     # xcross wine to linux
     "open-win")
@@ -1148,7 +1331,7 @@ function run() {
       local file=$(winepath -u "${*:2}")
       udg_file3=$(winepath -u "${*:2}")
 
-      # echo "$udg_file3" | xsel -b 
+      # echo "$udg_file3" | xsel -b
       # msgbox "$file";
       # clipit $file
       echo "$file" |xsel -i ;
@@ -1156,7 +1339,7 @@ function run() {
       ;;
 
     # linux
-    bc|meld)
+    meld)
       if [ -z "$2" ]; then
         GTK_THEME=Arc meld "/home/me/1.txt" "/home/me/2.txt"
       else
@@ -1173,18 +1356,18 @@ function run() {
 
 
     "fs_1")
-      nautilus -q 
+      # nautilus -q
       start env GTK_THEME=Flat-Remix-GTK-Green-Dark nautilus "$args"
       ;;
     "fs_1_root")
-      sudo nautilus -q 
+      sudo nautilus -q
       # env GTK_THEME=Flat-Remix-GTK-Red
       start sudo nautilus "$args"
       ;;
 
     "apt-pm")
       sudo -S GTK_THEME=Flat-Remix-GTK-Red synaptic "$args"
-      ;;   
+      ;;
 
     "diskgen")
       # Alternatives to DiskGenius
@@ -1198,10 +1381,10 @@ function run() {
       # gnome-disk-utility.
       # bash -c "env GTK_THEME=Arc gparted"
       sudo -S GTK_THEME=Arc gparted "$args"
-      ;;      
+      ;;
 
 
-      
+
 
     "dconf")
       killall dconf-editor
@@ -1211,13 +1394,13 @@ function run() {
       ;;
 
     "taskmgr")
-      killall gnome-system-monitor
-      GTK_THEME=Flat-Remix-GTK-Green gnome-system-monitor -r ${@:2}
-      wmctrl -a "System Monitor"
+      sudo killall gnome-system-monitor
+      sudo GTK_THEME=Flat-Remix-GTK-Yellow-Dark gnome-system-monitor -p ${@:2}
+      sudo wmctrl -a "System Monitor"
       ;;
     "taskmgr2")
       killall gnome-system-monitor
-      GTK_THEME=Flat-Remix-GTK-Yellow-Dark gnome-system-monitor -p ${@:2}
+      GTK_THEME=Flat-Remix-GTK-Green gnome-system-monitor -r ${@:2}
       wmctrl -a "System Monitor"
       ;;
 
@@ -1230,10 +1413,10 @@ function run() {
 
     "subl")
       GTK_THEME=Arc subl -n ${@:2}
-      ;;  
+      ;;
     "subl_root")
       sudo GTK_THEME=Flat-Remix-GTK-Red subl -n ${@:2}
-      ;;  
+      ;;
 
 
     "tweaks"|"skin"|"theme")
@@ -1295,24 +1478,33 @@ function win() {
 
 }
 
+
+
+function lastreboot() {
+  last reboot $*
+  last reboot $* -f /var/log/wtmp.1 
+}
+
+
 function logbash() {
   # echo logbash to ~/log/ (cache: ~/data)
   # mkdir ~/my-etc/data2/ && touch 111.txt
   # mkdir -p ~/my-etc/data4/ && pushd ~/my-etc/data4/ && touch 111.txt && popd
 
-  # touch 
+  # touch
   # exec ~/my-etc/data/bash_history.txt
   # lua filter get data to  ~/log/
   echo 111
 }
 
-# build 
+# build
 # source .bash_aliases
 function updatesh() {
-  if ! [ "$HOME" -ef "/home/me" ]; then
-    cp /home/me/.bash_aliases ~
+  local name=$(whoami)
+  if ! [ "$HOME" -ef "/home/$name" ]; then
+    cp /home/$name/.bash_aliases ~
   fi
-  sudo cp /home/me/.bash_aliases /root
+  sudo cp /home/$name/.bash_aliases /root
 
   sudo ls ~/.bash_aliases
   sudo ls /root/.bash_aliases
@@ -1337,6 +1529,7 @@ function update_apt_repo() {
   sudo apt update
   echo [upgradable]
   sudo apt list --upgradable
+  echo sudo apt-get upgrade
 }
 
 function sysinfo() {
@@ -1360,6 +1553,12 @@ function systemd-analyze-helpers() {
 
 }
 
+
+function free_mem() {
+  sudo sysctl -w vm.drop_caches=3
+}
+
+
 function testsh() {
   echo "Fetching OpenAL-CS from GitHub."
   if command -v curl >/dev/null 2>&1; then
@@ -1378,7 +1577,7 @@ function testsh() {
 
 export MY_BASH_LOG_FILE="/home/me/Documents/bash-log/bash-usr_$EUID-$(date +"%Y_%m_%d").log"
 
-function bash_log() {
+function bash_script_log() {
   # local path="/home/me/Documents/bash-log/bash-usr_$EUID-$(date +"%Y_%m_%d").log"
   local path="$MY_BASH_LOG_FILE"
   local todo="$1"
@@ -1411,7 +1610,7 @@ function bash_log() {
     watch|show)
       test $status == "on" && echo please exit bash log first || tail -f $path;
       ;;
-    
+
     *)
       echo bash_log not find $*
       ;;
@@ -1419,18 +1618,29 @@ function bash_log() {
 
 }
 
-function tt1() {
-  echo 777
+function show_bash_input() {
+  bash_script_log watch
 }
 
-function show_bash_log() {
-  bash_log watch
+function record_bash_input() {
+  bash_script_log on
 }
 
-function record_bash_log() {
-  bash_log on
+function bash_history_log() {
+  # Eternal bash history.
+  export HISTFILE=/drive_d/log/bash_history/user_$EUID-$(date +"%Y_%m").log
+  export HISTFILESIZE=
+  export HISTSIZE=
+  export HISTTIMEFORMAT=" [%F %T]  # "
+  export HISTIGNORE="r:ra:fs:hist:top:cmd:ps:history"
+  PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 }
 
+
+
+function check_sys_log() {
+  journalctl -af
+}
 
 
 

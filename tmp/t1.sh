@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function sound() {
   local dir="/drive_d/me/Music/effect/notifications"
   local wav="$1"
@@ -34,13 +33,5 @@ function msgbox() {
   7 $7";
 }
 
-function main() {
-  local exec=/drive_d/dev/SublimeText3211_x64_linux/sublime_text
-  GTK_THEME=Arc $exec -n "$@"
-}
 
-# msgbox "@*" &
-# sound&
-
-main "$@"
-
+msgbox "$@"
